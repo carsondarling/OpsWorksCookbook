@@ -1,5 +1,5 @@
 check host node_web_app_<%= @application_name %> with address 127.0.0.1
-  start program = "/bin/sh -c 'cd <%= @deploy[:deploy_to] %>/current; /usr/bin/env NODE_PATH=<%= @deploy[:deploy_to] %>/current/node_modules:<%= @deploy[:deploy_to] %>/current /usr/local/bin/node servers/Eve.js'"
+  start program = "/bin/sh -c 'cd <%= @deploy[:deploy_to] %>/current; /usr/bin/env NODE_PATH=<%= @deploy[:deploy_to] %>/current/node_modules:<%= @deploy[:deploy_to] %>/current <% (node[:env_vars] || {}).merge(@deploy[:env_vars] || {}).each do |name,value| -%><%= name %>=<%= value %> <% end -%> /usr/local/bin/node servers/Eve.js'"
   stop program  = "/usr/bin/pkill -f 'node servers/Eve.js'"
   if failed port 4000 protocol HTTP
     request /
